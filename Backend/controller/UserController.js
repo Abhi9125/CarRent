@@ -2,6 +2,7 @@ import z, { success } from "zod";
 import bcrypt from "bcrypt";
 import User from "../model/User.js";
 import jwt from "jsonwebtoken";
+import { authMiddleWare } from "../middleware/auth.js";
 
 const registerUserSchema = z.object({
   email: z.string().email(),
@@ -104,6 +105,21 @@ export const loginUser = async (req, res) => {
     res.json({
       success: "done",
       token,
+    });
+  } catch (err) {
+    return res.json({
+      message: err.message,
+    });
+  }
+};
+
+//get User
+
+export const getUser = async (req, res) => {
+  try {
+    return res.json({
+      success: true,
+      user: req.user,
     });
   } catch (err) {
     return res.json({
